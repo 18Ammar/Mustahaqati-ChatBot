@@ -1,0 +1,387 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.main {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+@keyframes background-animation {
+  0% { background-color: #3B006D; }
+  50% { background-color: #4A007E; }
+  100% { background-color: #3B006D; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  z-index: 3; /* Ensure header is above the nav-menu */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: 20px;
+  z-index: 3; /* Ensure logo is above the nav-menu */
+}
+
+.logo-img {
+  width: 100px;
+  height: auto;
+}
+
+.site-name {
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 15px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+
+}
+
+.long-text {
+  background-color: #3B006D;
+  padding: 20px;
+  border-radius: 15px;
+  color: #ebc6f7;
+  font-size: 24px;
+  text-align: left;
+  margin-bottom: 20px;
+  width: 40%;
+}
+
+.google-login-btn {
+  background-color: #5b1268;
+  color: white;
+  width: 500px;
+  height: 60px;
+  max-width: 250px;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.google-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 20px;
+  margin-right: 20px;
+  z-index: 2; /* Ensure the nav-menu is below the header and logo */
+}
+
+.nav-menu a {
+  color: #FFFFFF;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  position: relative;
+  padding-bottom: 5px;
+  transition: color 0.3s ease-in-out;
+}
+.nav-menu .nav-text a{
+  color: #FFFFFF;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  position: relative;
+  padding-bottom: 5px;
+  margin-left: 20px;
+  right: 30px;
+  transition: color 0.3s ease-in-out;
+}
+.nav-menu a:hover {
+  color: #FF33FF; 
+}
+
+.nav-menu a.active {
+  border-bottom: 3px solid #FF33FF; 
+}
+
+.burger-menu {
+  display: none;
+  z-index: 4; /* Ensure the burger menu is above everything */
+}
+@media screen and (max-width: 768px) {
+  .burger-menu {
+    display: block;
+    cursor: pointer;
+    font-size: 2em;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 4;
+  }
+  
+  .burger-menu::before {
+    content: '☰'; /* Hamburger icon */
+  }
+  
+  .burger-menu.open::before {
+    content: 'X'; /* Close icon */
+  }
+  
+  .nav-menu {
+    display: none; 
+    flex-direction: column;
+    background-color: #3B006D;
+    padding-left: 40px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 200px;
+    margin-top: auto; /* Push the menu items to the bottom */
+    z-index: 2; /* Ensure the nav-menu is below the header and burger menu */
+  }
+  
+  .nav-menu.active {
+    display: flex; /* Show when active */
+    animation: slide-down 0.3s ease-in-out;
+  }
+  
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .header {
+    padding: 10px;
+  }
+
+  .logo-img {
+    width: 80px;
+  }
+
+  .site-name {
+    font-size: 16px;
+    margin-left: 5px;
+  }
+  .nav-menu .nav-text{
+    flex-direction: column;
+    align-items: flex-start;
+    display: grid;
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+  }
+  .nav-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 0 10px;
+    position: absolute;
+    margin-top: auto; 
+  }
+
+  .nav-menu a {
+    font-size: 14px;
+  }
+
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .logo {
+    left: 10px;
+  }
+
+  .site-name {
+    font-size: 18px;
+    margin-left: 10px;
+  }
+
+  .contentContainer {
+    align-items: center;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .long-text {
+    font-size: 20px;
+    padding: 15px;
+    width: 280px;
+    text-align: right;
+  }
+
+  .google-login-btn {
+    width: 200px;
+    height: 45px;
+    max-width: 200px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .burger-menu {
+    display: block;
+    cursor: pointer;
+    font-size: 2em;
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 4;
+  }
+  
+  .burger-menu::before {
+    content: '☰'; /* Hamburger icon */
+  }
+  
+  .burger-menu.open::before {
+    content: 'X'; /* Close icon */
+  }
+  
+  .nav-menu {
+    display: none; 
+    flex-direction: column;
+    background-color: #3B006D;
+    padding-left: 40px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 200px;
+    margin-top: auto; /* Push the menu items to the bottom */
+    z-index: 2; /* Ensure the nav-menu is below the header and burger menu */
+  }
+  
+  .nav-menu.active {
+    display: flex; /* Show when active */
+    animation: slide-down 0.3s ease-in-out;
+  }
+  
+  @keyframes slide-down {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .header {
+    padding: 10px;
+  }
+
+  .logo-img {
+    width: 80px;
+  }
+
+  .site-name {
+    font-size: 16px;
+    margin-left: 5px;
+  }
+  .nav-menu .nav-text{
+    flex-direction: column;
+    align-items: flex-start;
+    display: grid;
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+  }
+  .nav-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 0 10px;
+    position: absolute;
+    margin-top: auto; 
+  }
+
+  .nav-menu a {
+    font-size: 14px;
+  }
+
+  .contentContainer {
+    padding: 10px 20px;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+
+  .long-text {
+    font-size: 20px;
+    padding: 15px;
+    width: 280px;
+    text-align: right;
+  }
+
+  .google-login-btn {
+    width: 80px;
+    width: 500px;
+    font-size: 14px;
+    height: 45px;
+  }
+}

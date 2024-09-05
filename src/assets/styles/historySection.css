@@ -1,0 +1,138 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  border: #31064b 1px solid;
+  width: 300px;
+  height: 100vh;
+  max-height: 100vh;
+  background: linear-gradient(135deg, #1d1025, #000000);
+  border-radius: 4%;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  transform: translateX(0);
+  transition: transform 1s ease, opacity 1s ease;
+  opacity: 1;
+  z-index: 1;
+}
+.historyList.selected-chat {
+  background-color: #211133; 
+  border-left: 4px solid #864caf; 
+  color: #fff; 
+}
+
+.historyList .history-List {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.historyList:hover {
+  background-color: #211133; 
+  color: #fff;
+}
+
+.hidden {
+  transform: translateX(-100%);
+  opacity: 1;
+  transition: transform 1s ease, opacity 1s ease;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.historyList {
+  list-style-type: none;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #251430;
+  border: #220236 1px solid;
+  border-radius: 8px;
+  text-align: left;
+  width: 250px;
+  color: #fff;
+  cursor: pointer;
+  white-space: pre-wrap;
+  transition: background-color 0.2s ease-in-out;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+
+
+.menuContainer {
+  position: absolute;
+  top: 0;
+  right: 0px; 
+}
+
+
+
+.newChatButton {
+  padding: 10px;
+  color: #9b9999;
+  font-size: 48px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.newChatButton:hover {
+  color: #d0cfcf;
+}
+
+
+
+.closeButton:hover {
+  color: #d0cfcf;
+}
+
+.closedMenu {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  align-content: space-between;
+  margin-left: 10px;
+  top: 15px;
+  left: 2px;
+}
+
+.openButton {
+  padding: 10px;
+  font-size: 48px;
+  color: #9b9999;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.openButton:hover {
+  color: #d0cfcf;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #502869;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #371b48;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #341945;
+}
