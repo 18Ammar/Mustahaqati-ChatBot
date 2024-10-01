@@ -1,6 +1,5 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { checkLoginStatus } from "../service/authApi";
 
 const ProtectedRoute = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -8,10 +7,16 @@ const ProtectedRoute = ({ children }) => {
 
   React.useEffect(() => {
     const checkStatus = async () => {
-      const loggedIn = await checkLoginStatus();
-      console.log(loggedIn);
-      setIsLoggedIn(loggedIn);
-      setLoading(false);
+      const access_token = localStorage.getItem("token");
+      if(access_token) {
+        console.log(access_token)
+        setIsLoggedIn(true);
+        setLoading(false);
+      }
+      else{
+        setIsLoggedIn(false);
+        setLoading(false);
+      }
     };
     checkStatus();
   }, []);

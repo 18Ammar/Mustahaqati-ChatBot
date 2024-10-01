@@ -1,14 +1,8 @@
-import axios from "axios";
+import { apiWithInterceptor } from "../api";
 
 async function GetChatsbyId(chatId) {
-  console.log(" getting chat", chatId);
   try {
-    const response = await axios.get(`url/chats/${chatId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer ",
-      },
-    });
+    const response = apiWithInterceptor.get(`url/chats/${chatId}`);
     return response; // response => {sender: "bot" or "user", content: response, chatId: 1..}
   } catch (error) {
     console.error("Error fetching chats:", error);
@@ -17,14 +11,8 @@ async function GetChatsbyId(chatId) {
 }
 
 async function createNewChat(chat) {
-  console.log("creating chat", chat);
   try {
-    const response = await axios.post("url/create", chat, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer ",
-      },
-    });
+    const response = apiWithInterceptor.post("url/create", chat);
     return response.data;
   } catch (error) {
     console.error("Error creating chat:", error);
@@ -33,14 +21,8 @@ async function createNewChat(chat) {
 }
 
 async function getAllChatHistory() {
-  console.log("getting all chat history");
   try {
-    const response = await axios.get("url/chats", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer ",
-      },
-    });
+    const response = apiWithInterceptor.get("url/chats");
     return response.data;
   } catch (error) {
     console.error("Error fetching chat history:", error);
@@ -51,13 +33,8 @@ async function getAllChatHistory() {
 async function deleteChatById(chatId) {
   console.log("deleting chat", chatId);
   try {
-    const response = await axios.delete(`url/chats/${chatId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer ",
-      },
-    });
-    return response.status === 200; // Return true if deletion is successful
+    const response = apiWithInterceptor.delete(`url/chats/${chatId}`);
+    return response.status === 200;
   } catch (error) {
     console.error("Error deleting chat:", error);
     return false;
