@@ -1,31 +1,33 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+// import React from "react";
+// import { Navigate } from "react-router-dom";
+// import { fetchUserProfile } from "../service/auth";
 
-const ProtectedRoute = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
+// const ProtectedRoute = ({ children }) => {
+//   const [isLoggedIn, setIsLoggedIn] = React.useState(null); // Start with null to indicate loading
 
-  React.useEffect(() => {
-    const checkStatus = async () => {
-      const access_token = localStorage.getItem("token");
-      if(access_token) {
-        console.log(access_token)
-        setIsLoggedIn(true);
-        setLoading(false);
-      }
-      else{
-        setIsLoggedIn(false);
-        setLoading(false);
-      }
-    };
-    checkStatus();
-  }, []);
+//   React.useEffect(() => {
+//     const checkStatus = async () => {
+//       const access_token = localStorage.getItem('access_token');
+//       if (access_token) {
+//         const userProfile = await fetchUserProfile(access_token);
+//         if (userProfile) {
+//           setIsLoggedIn(true);
+//         } else {
+//           localStorage.removeItem('access_token');
+//           setIsLoggedIn(false);
+//         }
+//       } else {
+//         setIsLoggedIn(false); 
+//       }
+//     };
+//     checkStatus();
+//   }, []);
 
-  if (loading) {
-    return <div style={{ color: "black" }}>Loading...</div>;
-  }
+//   if (isLoggedIn === null) {
+//     return <div>Loading...</div>; 
+//   }
 
-  return isLoggedIn ? children : <Navigate to="/" />;
-};
+//   return isLoggedIn ? children : <Navigate to="/" />;
+// };
 
-export default ProtectedRoute;
+// export default ProtectedRoute;

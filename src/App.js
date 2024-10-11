@@ -1,22 +1,22 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { AuthProvider } from "./context/AuthContext";
+// import { GoogleOAuthProvider } from "@react-oauth/google";
+// import { AuthProvider } from "./context/AuthContext";
 import AppRoutes from "./Route";
 import "./assets/styles/App.css";
-
+import "@mantine/core/styles.css"
 function App() {
-  const clientId =
-    "350413615389-m5devfhv5a1r9hk5cqe14saa5kspkjum.apps.googleusercontent.com";
+  // const clientId =
+  //   "350413615389-m5devfhv5a1r9hk5cqe14saa5kspkjum.apps.googleusercontent.com";
 
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <AuthProvider>
+    // <GoogleOAuthProvider clientId={clientId}>
+      // <AuthProvider>
         <Router>
           <AppRoutes />
         </Router>
-      </AuthProvider>
-    </GoogleOAuthProvider>
+      // </AuthProvider>
+    // </GoogleOAuthProvider>
   );
 }
 

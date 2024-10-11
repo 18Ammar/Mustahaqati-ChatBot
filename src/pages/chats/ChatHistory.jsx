@@ -8,31 +8,30 @@ import { HeaderButtons } from "./components/HeaderButtons ";
 import "@mantine/core/styles.css";
 
 export default function HistorySide({ onNewChat, onClearChat, onSelectedChat, initialMessage, selectedChatId }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(null);
   const [histories, setHistories] = useState([]);
   const [firstChat, setFirstChat] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const [editableChatId, setEditableChatId] = useState(null);
-  const menuRef = useClickOutside(() => {
-    setActiveMenu(null);
-    setEditableChatId(null);
-  });
+
   const historyRef = useClickOutside(() => {
-    setIsOpen(false);
-    handleClose()
+    if (window.matchMedia("(max-width: 1068px)").matches) {
+      setIsOpen(false);
+      handleClose();
+    }
   });
 
-  useEffect(() => {
-    fetchChatsHistory();
-  }, []);
+  // useEffect(() => {
+  //   fetchChatsHistory();
+  // }, []);
 
-  async function fetchChatsHistory() {
-    const response = await getAllChatHistory();
-    if (response.status === 200) {
-      setHistories(response.data);
-    }
-    return response;
-  }
+  // async function fetchChatsHistory() {
+  //   const response = await getAllChatHistory();
+  //   if (response.status === 200) {
+  //     setHistories(response.data);
+  //   }
+  //   return response;
+  // }
 
   const handleNewChat = () => {
     const newId = histories.length + 1;
@@ -61,7 +60,6 @@ export default function HistorySide({ onNewChat, onClearChat, onSelectedChat, in
     createNewChat({ id: chatId, title: title });
   };
 
-
   const handleRename = (id) => {
     setEditableChatId(id);
   };
@@ -75,26 +73,30 @@ export default function HistorySide({ onNewChat, onClearChat, onSelectedChat, in
   const getChats = (id) => {
     if (onSelectedChat) {
       onSelectedChat(id);
-      handleClose();
+      if (window.matchMedia("(max-width: 768px)").matches) {
+        handleClose();
+
+      }
     }
   };
 
   const handleClose = () => {
-    if (window.matchMedia("(max-width: 768px)").matches) {
-      setIsOpen(false);
-      const sendContainer = document.querySelector(".send-container");
-      const conversation = document.querySelector(".conversation");
+    // if (window.matchMedia("(max-width: 768px)").matches) {
+    setIsOpen(false);
+    const sendContainer = document.querySelector(".send-container");
+    const conversation = document.querySelector(".conversation");
 
-      if (sendContainer) {
-        sendContainer.classList.add("shifted");
-        sendContainer.classList.remove("not-shifted");
-      }
-
-      if (conversation) {
-        conversation.classList.add("shifted");
-        conversation.classList.remove("not-shifted");
-      }
+    if (sendContainer) {
+      sendContainer.classList.add("shifted");
+      sendContainer.classList.remove("not-shifted");
     }
+
+    if (conversation) {
+      conversation.classList.add("shifted");
+      conversation.classList.remove("not-shifted");
+    }
+
+    // }
   };
 
 
@@ -137,7 +139,6 @@ export default function HistorySide({ onNewChat, onClearChat, onSelectedChat, in
             histories={histories}
             editableChatId={editableChatId}
             activeMenu={activeMenu}
-            menuRef={menuRef}
             updateChatTitle={updateChatTitle}
             getChats={getChats}
             toggleMenu={toggleMenu}

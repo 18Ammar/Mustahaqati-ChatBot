@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/home";
 import ChatPage from "./pages/chats";
 import ProfilePage from "./pages/profile";
-import ProtectedRoute from "./components/ProtectedRoute";
+// import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./components/Shared/notFound";
 
 function AppRoutes() {
@@ -13,20 +13,16 @@ function AppRoutes() {
             <Route
                 path="/chat"
                 element={
-                    <ProtectedRoute>
-                        <ChatPage />
-                    </ProtectedRoute>
+                    <ChatPage />
                 }
             />
             <Route
-                path="/profile"
+                path="/about"
                 element={
-                    <ProtectedRoute>
-                        <ProfilePage />
-                    </ProtectedRoute>
+                    <ProfilePage />
                 }
             />
-            <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route */}
+            <Route path="*" element={<NotFoundPage />} />
         </Routes>
     );
 }

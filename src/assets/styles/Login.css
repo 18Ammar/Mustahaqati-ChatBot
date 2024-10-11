@@ -41,7 +41,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  z-index: 3; /* Ensure header is above the nav-menu */
+  z-index: 3; 
 }
 
 .logo {
@@ -49,7 +49,7 @@ body {
   align-items: center;
   position: relative;
   left: 20px;
-  z-index: 3; /* Ensure logo is above the nav-menu */
+  z-index: 3;
 }
 
 .logo-img {
@@ -111,7 +111,7 @@ h1 {
   display: flex;
   gap: 20px;
   margin-right: 20px;
-  z-index: 2; /* Ensure the nav-menu is below the header and logo */
+  z-index: 2;
 }
 
 .nav-menu a {

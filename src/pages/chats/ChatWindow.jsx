@@ -1,45 +1,38 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useAuth } from "../../context/AuthContext";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import "../../assets/styles/Chat.css";
 import { IoSend } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg";
-import {
-  sendMessage,
-  receiveMessage,
-  removeListeners,
-} from "../../service/sendReceiveApi";
-import GetChatsbyId from "../../service/chatApi";
+import { generateAnswers, fetchQuestions } from "../../service/chatApi";
+import { Chip, Group, MantineProvider } from "@mantine/core";
+import { IconQuestionMark } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-
+import "@mantine/core/styles.css"
 export default function ChatWindow({
   onClearChat,
   activeChatId,
   selectedChatId,
   onFirstMessage,
 }) {
-  const { user } = useAuth();
   const [chats, setChats] = useState([]);
   const [message, setMessage] = useState("");
   const [chatId, setChatId] = useState(activeChatId);
   const [firstMessageSent, setFirstMessageSent] = useState(false);
-  const navigate = useNavigate();
+  const [questions, setQuestions] = useState([]);
 
+
+  const lastMessageRef = useRef(null);
+  const conversationRef = useRef(null);
+  const navigate = useNavigate();
   useEffect(() => {
     setChatId(selectedChatId);
   }, [selectedChatId]);
 
   useEffect(() => {
-    async function fetchChats() {
-      const data = await GetChatsbyId(selectedChatId);
-      if (data) {
-        setChats(data);
-      }
+    async function loadQuestions() {
+      const questionsData = await fetchQuestions();
+      setQuestions(questionsData);
     }
-
-    if (selectedChatId) {
-      fetchChats();
-    }
-  }, [selectedChatId]);
+    loadQuestions();
+  }, []);
 
   const handleReceiveMessage = useCallback(
     (response) => {
@@ -47,36 +40,21 @@ export default function ChatWindow({
         ...prevChats,
         { sender: "bot", content: response, chatId: chatId },
       ]);
-
-      requestAnimationFrame(() => {
-        const ulElement = document.querySelector("ul");
-        ulElement.scrollTop = ulElement.scrollHeight;
-      });
     },
     [chatId]
   );
 
-  useEffect(() => {
-    receiveMessage(handleReceiveMessage);
-
-    return () => {
-      removeListeners();
-    };
-  }, [handleReceiveMessage]);
-
-  const clearChat = () => {
-    setChats([]);
+  const scrollToLastMessage = () => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
-    if (onClearChat) {
-      onClearChat(clearChat);
-    }
-  }, [onClearChat]);
+    scrollToLastMessage();
+  }, [chats]);
 
-  const userMessage = () => {
-    const inputElement = document.querySelector(".input-msg");
-
+  const userMessage = async () => {
     if (message.trim()) {
       setChats((prevChats) => [
         ...prevChats,
@@ -84,14 +62,13 @@ export default function ChatWindow({
       ]);
       setMessage("");
 
-      inputElement.style.height = "60px";
-
-      requestAnimationFrame(() => {
-        const ulElement = document.querySelector("ul");
-        ulElement.scrollTop = ulElement.scrollHeight;
-      });
-
-      sendMessage(message.trim());
+      const trimmedMessage = message.trim();
+      try {
+        const response = await generateAnswers(trimmedMessage);
+        handleReceiveMessage(response);
+      } catch (error) {
+        console.error("Error generating response:", error);
+      }
 
       if (
         onFirstMessage &&
@@ -105,11 +82,6 @@ export default function ChatWindow({
 
   const handleInput = (event) => {
     setMessage(event.target.value);
-    const textarea = event.target;
-    textarea.style.height = "auto";
-
-    textarea.style.height = `${textarea.scrollHeight}px`;
-    textarea.style.lineHeight = "1"
   };
 
   const handleKeyDown = (event) => {
@@ -123,45 +95,105 @@ export default function ChatWindow({
     }
   };
 
-  const toProfile = () => {
-    navigate("/profile");
+  const handleQuestionClick = (question) => {
+    setMessage(question);
   };
 
-  return (
-    <div className="mainView">
-      {user ? (
-        <img
-          src={user.picture}
-          alt="Profile"
-          className="profile-image"
-          onClick={toProfile}
-        />
-      ) : (
-        <CgProfile className="profile-image" />
-      )}
-      <div className="conversation">
 
-        <ul>
-          {chats
-            .filter((chat) => chat.chatId === selectedChatId)
-            .map((chat, index) => (
-              <li key={index} id={chat.sender}>
-                {chat.content}
-              </li>
-            ))}
-        </ul>
+
+
+  const suggestionRef = useRef(null);
+  const handleMouseDown = (e) => {
+    const startX = e.pageX - suggestionRef.current.offsetLeft;
+    const scrollLeft = suggestionRef.current.scrollLeft;
+
+    const handleMouseMove = (e) => {
+      const x = e.pageX - suggestionRef.current.offsetLeft;
+      const walk = (x - startX) * 2;
+      suggestionRef.current.scrollLeft = scrollLeft - walk;
+    };
+
+    const handleMouseUp = () => {
+      suggestionRef.current.removeEventListener("mousemove", handleMouseMove);
+      suggestionRef.current.removeEventListener("mouseup", handleMouseUp);
+      suggestionRef.current.removeEventListener("mouseleave", handleMouseUp);
+    };
+
+    suggestionRef.current.addEventListener("mousemove", handleMouseMove);
+    suggestionRef.current.addEventListener("mouseup", handleMouseUp);
+    suggestionRef.current.addEventListener("mouseleave", handleMouseUp);
+  };
+  const navToAbout = () => {
+    navigate('/about');
+  }
+
+  return (
+    <MantineProvider
+      withGlobalStyles
+      withNormalizeCSS
+      defaultColorScheme='dark'
+    >
+      <div className="mainView">
+        <IconQuestionMark className="profile-image" onClick={navToAbout} />
+
+        <div className="conversation" ref={conversationRef}>
+          <ul>
+            {chats
+              .filter((chat) => chat.chatId === selectedChatId)
+              .map((chat, index) => (
+                <li
+                  key={index}
+                  id={chat.sender}
+                  ref={index === chats.length - 1 ? lastMessageRef : null}
+                >
+                  {chat.content}
+                </li>
+              ))}
+          </ul>
+        </div>
+        <div className="send-wrapper">
+          <div className="send-container">
+            <textarea
+              className="input-msg"
+              placeholder="اكتب رسالتك"
+              value={message}
+              onInput={handleInput}
+              onKeyDown={handleKeyDown}
+            />
+            <IoSend className="send-btn" onClick={userMessage} />
+
+            <div
+              className="suggestion-container"
+              ref={suggestionRef}
+              onMouseDown={handleMouseDown}
+            >
+              {questions.map((q, index) => (
+                <Chip.Group>
+                  <Group  >
+                    <Chip
+
+                      key={index}
+                      variant="outline"
+                      onClick={() => handleQuestionClick(q)}
+                      styles={{
+                        checkIcon: {
+                          display: "none",
+                        },
+                      }}
+                      style={{
+                        margin: "0 1px",
+                      }}
+                    >
+                      {q}
+                    </Chip>
+                  </Group>
+                </Chip.Group>
+
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="send-container">
-        <textarea
-          className="input-msg"
-          placeholder="اكتب رسالتك"
-          value={message}
-          onInput={handleInput}
-          onKeyDown={handleKeyDown}
-          style={{ height: "60px" }}
-        />
-        <IoSend className="send-btn" onClick={userMessage} />
-      </div>
-    </div>
+    </MantineProvider>
   );
 }
