@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Menu, Button, TextInput, rem } from '@mantine/core';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+// import { IconEdit, IconTrash } from '@tabler/icons-react';
 // import { deleteChatById } from "../../../service/chatApi";
 import "../../../assets/styles/historySection.css";
 import "@mantine/core/styles.css";

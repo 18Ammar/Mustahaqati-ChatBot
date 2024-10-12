@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../../assets/styles/Login.css";
 import { Image } from "@mantine/core";
-import logo from "../../assets/images/file.png";
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -11,7 +10,7 @@ export default function Header() {
       <div className="logo">
         <Image
           style={{ width: "170px", height: "70px", position: "relative", right: "30px", bottom: "10px" }}
-          src={logo}
+          src={`${process.env.PUBLIC_URL}/file.png`}
         />
       </div>
       <div

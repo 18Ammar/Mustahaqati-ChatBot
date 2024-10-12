@@ -54,7 +54,8 @@ const fetchQuestions = async () => {
     const response = await fetch("https://api.digitaljustice.app/questions");
 
     const data = await response.json(); 
-    const questions = data.questions;   
+    const questions = data.questions;  
+    console.log(questions) ;
     return questions;
   } catch (error) {
     console.error("Error fetching questions:", error);

@@ -17,8 +17,8 @@ export default function ChatWindow({
   const [chatId, setChatId] = useState(activeChatId);
   const [firstMessageSent, setFirstMessageSent] = useState(false);
   const [questions, setQuestions] = useState([]);
-
-
+  const [isTyping, setIsTyping] = useState(false);
+  const [containerHeight, setContainerHeight] = useState(100);
   const lastMessageRef = useRef(null);
   const conversationRef = useRef(null);
   const navigate = useNavigate();
@@ -36,6 +36,7 @@ export default function ChatWindow({
 
   const handleReceiveMessage = useCallback(
     (response) => {
+      setIsTyping(false);
       setChats((prevChats) => [
         ...prevChats,
         { sender: "bot", content: response, chatId: chatId },
@@ -55,18 +56,24 @@ export default function ChatWindow({
   }, [chats]);
 
   const userMessage = async () => {
+    const inputElement = document.querySelector(".input-msg");
     if (message.trim()) {
       setChats((prevChats) => [
         ...prevChats,
         { sender: "user", content: message.trim(), chatId: selectedChatId },
       ]);
       setMessage("");
-
+      inputElement.style.height = "60px";
+      setContainerHeight(100)
       const trimmedMessage = message.trim();
+      setIsTyping(true);
       try {
         const response = await generateAnswers(trimmedMessage);
-        handleReceiveMessage(response);
+        setTimeout(() => {
+          handleReceiveMessage(response);
+        }, 1000);
       } catch (error) {
+        setIsTyping(false);
         console.error("Error generating response:", error);
       }
 
@@ -82,15 +89,21 @@ export default function ChatWindow({
 
   const handleInput = (event) => {
     setMessage(event.target.value);
+    const textarea = event.target;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+    const newHeight = Math.max(100, textarea.scrollHeight + 20);
+    setContainerHeight(newHeight);
   };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      if (event.shiftKey) {
+      if (event.shiftKey || window.matchMedia("(max-width: 960px)").matches) {
         return;
       } else {
         event.preventDefault();
         userMessage();
+        setContainerHeight(100);
       }
     }
   };
@@ -123,6 +136,7 @@ export default function ChatWindow({
     suggestionRef.current.addEventListener("mouseup", handleMouseUp);
     suggestionRef.current.addEventListener("mouseleave", handleMouseUp);
   };
+
   const navToAbout = () => {
     navigate('/about');
   }
@@ -134,7 +148,9 @@ export default function ChatWindow({
       defaultColorScheme='dark'
     >
       <div className="mainView">
+
         <IconQuestionMark className="profile-image" onClick={navToAbout} />
+
 
         <div className="conversation" ref={conversationRef}>
           <ul>
@@ -148,11 +164,19 @@ export default function ChatWindow({
                 >
                   {chat.content}
                 </li>
+
               ))}
+            {isTyping && (
+              <li id="bot-typing" className="typing-indicator">
+                <span className="dot"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+              </li>
+            )}
           </ul>
         </div>
-        <div className="send-wrapper">
-          <div className="send-container">
+        <div className="send-wrapper" >
+          <div className="send-container" style={{ height: `${containerHeight}px`, maxHeight: "220px" }}>
             <textarea
               className="input-msg"
               placeholder="اكتب رسالتك"
@@ -166,12 +190,13 @@ export default function ChatWindow({
               className="suggestion-container"
               ref={suggestionRef}
               onMouseDown={handleMouseDown}
+              style={{ position: "absolute", bottom: `${Math.min(containerHeight - 19, 205)}px` }}
+
             >
               {questions.map((q, index) => (
                 <Chip.Group>
                   <Group  >
                     <Chip
-
                       key={index}
                       variant="outline"
                       onClick={() => handleQuestionClick(q)}
@@ -188,7 +213,6 @@ export default function ChatWindow({
                     </Chip>
                   </Group>
                 </Chip.Group>
-
               ))}
             </div>
           </div>

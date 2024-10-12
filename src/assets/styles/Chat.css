@@ -1,22 +1,25 @@
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden; 
+    overflow: hidden;
 }
+
 .mainView {
     width: 100%;
     height: 100vh;
     background: linear-gradient(135deg, #21122b, #0d0909);
-    overflow: hidden; /* This makes sure the main view doesn't scroll */
+    overflow: hidden;
 }
+
 .profile-image {
     width: 30px;
     height: 30px;
     position: absolute;
-    border-radius:5px ;
+    border-radius: 5px;
     right: 15px;
-    top: 18px;
+    top: 10px;
     cursor: pointer;
     color: #9b9999;
     transition: color 0.3s ease;
@@ -24,26 +27,28 @@ html, body {
     border-radius: 25px;
     z-index: 1000;
 }
+
 .suggestion-container {
     color: #fff;
     border-radius: 7px;
     position: absolute;
-    bottom: 69px; 
+    bottom: 65px;
     left: 51.3%;
-    width: calc(100% - 40px); 
+    width: calc(100% - 40px);
     max-width: 670px;
     transform: translateX(-50%);
     z-index: 1;
-    display: flex; 
+    display: flex;
     overflow-x: auto;
     padding: 10px;
-    white-space: nowrap; 
+    white-space: nowrap;
     scrollbar-width: none;
 }
 
-.mantine-Chip-checkIcon{
+.mantine-Chip-checkIcon {
     display: none;
 }
+
 .question-list {
 
     padding: 10px;
@@ -58,11 +63,12 @@ html, body {
     cursor: pointer;
     padding: 5px;
     background-color: rgba(255, 255, 255, 0.1);
-    margin:25px;
+    margin: 25px;
     border-radius: 8px;
     text-align: right;
 }
-.question-item:hover{
+
+.question-item:hover {
     background-color: rgb(45, 41, 41);
 }
 
@@ -71,17 +77,18 @@ html, body {
 }
 
 .shifted {
-    transform: translateX(-30px); 
+    transform: translateX(-30px);
     transition: transform 1s ease;
 }
 
 .not-shifted {
-    transform: translateX(30px); 
+    transform: translateX(30px);
     transition: transform 1s ease;
 }
 
-#user, #bot {
-    display: inline-block; 
+#user,
+#bot {
+    display: inline-block;
     align-items: center;
     margin-bottom: 16px;
     padding: 10px;
@@ -96,51 +103,120 @@ html, body {
     background-color: #2f2b5a;
     color: #fff;
     text-align: right;
-    float: right; 
+    float: right;
     clear: both;
 }
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-50%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 
 #bot {
     background-color: #3b2652;
     color: #fff;
-    text-align: right; 
-    float: left; 
+    text-align: right;
+    float: left;
     clear: both;
+    animation: slideIn 0.5s ease;
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 5px;
+    margin-left: 15px;
+    padding: 10px;
+    border-radius: 14px;
+    background-color: #3b2652;
+    color: #fff;
+    float: left;
+    clear: both;
+}
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border-radius: 50%;
+    opacity: 0;
+    animation: blink 1.4s infinite both;
+}
+
+.dot:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 .conversation {
     display: flex;
     flex-direction: column;
-    position: relative;
-    padding-bottom: 90px; /* Space for send-container */
+    position: fixed;
     left: 20%;
-    padding: 0 20px; 
+    bottom: 16%;
+    padding-top: 105px;
+    padding-bottom: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
     height: calc(100vh - 180px);
-    top: 60px;
+    max-height: calc(100vh - 180px);
     width: 80%;
     max-width: 1050px;
-    overflow-y: auto; /* Allow the conversation to scroll */
+    overflow-y: auto;
     scrollbar-width: none;
+    margin-top: 60px;
+    z-index: 0;
+
 }
 
 .conversation ul {
     list-style-type: none;
     margin: 0;
-    padding: 0 10px 0 10px; 
+    padding: 0 10px 0 10px;
     color: #d0cfcf;
     height: 100%;
-    overflow-y:unset;
+    overflow-y: unset;
+    z-index: 0;
 }
 
 .conversation::-webkit-scrollbar {
-    display: none; 
+    display: none;
 
 }
 
 .conversation::-webkit-scrollbar-track {
     background: #502869;
     left: 10px;
-    
+
 
 }
 
@@ -161,16 +237,16 @@ html, body {
     border: 1px solid #3f6eb3;
     color: white;
     border-radius: 24px;
-    padding-top:19px;
+    padding-top: 19px;
     padding-right: 45px;
     font-size: 18px;
     text-align: right;
     resize: none;
-    width: calc(100% - 20px); 
+    width: calc(100% - 20px);
     box-sizing: border-box;
     overflow-y: hidden;
     transition: transform 1s ease;
-    max-height:200px; 
+    max-height: 200px;
 
 }
 
@@ -178,8 +254,8 @@ html, body {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    position: fixed; /* Fix the position at the bottom */
-    bottom: 10px; /* Ensure it's at the bottom of the viewport */
+    position: fixed;
+    bottom: -3px;
     left: 20px;
     right: 20px;
     margin: auto;
@@ -187,24 +263,24 @@ html, body {
     width: 100%;
     max-width: 700px;
     box-sizing: border-box;
-    background-color: rgba(0, 0, 0, 0.7); /* Optional: Add background to avoid overlap */
-    z-index: 1000; /* Keep the container above the rest of the content */
+    z-index: 0;
 }
+
 .input-msg {
     background-color: rgba(0, 0, 0, 0.4);
     border: 1px solid #3f6eb3;
     color: white;
     border-radius: 24px;
-    padding: 12px 45px 12px 20px; 
+    padding: 20px 45px 12px 20px;
     font-size: 18px;
-    text-align: right;
+    direction: rtl;
     resize: none;
-    width: calc(100% - 20px); 
+    width: calc(100% - 20px);
     box-sizing: border-box;
     overflow-y: hidden;
     transition: transform 1s ease;
     max-height: 200px;
-    line-height: 1; 
+    line-height: 1;
 }
 
 .input-msg:focus {
@@ -222,8 +298,9 @@ html, body {
     cursor: pointer;
     position: absolute;
     right: 10px;
-    bottom: 16px;
+    bottom: 29px;
 }
+
 .scroll-btn {
     display: block;
     position: fixed;
@@ -238,21 +315,23 @@ html, body {
     align-items: center;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .scroll-btn:hover {
+}
+
+.scroll-btn:hover {
     background-color: #3e1562;
-  }
-  
-  .scroll-btn svg {
+}
+
+.scroll-btn svg {
     color: white;
-  }
+}
 
 @media screen and (max-width: 968px) {
-    .scroll-btn{
+    .scroll-btn {
         display: none;
     }
-    #user, #bot {
+
+    #user,
+    #bot {
         display: flex;
         align-items: center;
         margin-bottom: 16px;
@@ -262,33 +341,72 @@ html, body {
         overflow-wrap: break-word;
         max-width: 60%;
     }
+
     .conversation {
         width: 102%;
         left: 4%;
     }
+
     .input-msg {
         padding-right: 60px;
     }
-    .send-container{
-        transform: translateX(-30px); 
-    transition: transform 1s ease;
+
+    .send-container {
+        transform: translateX(-30px);
+        transition: transform 1s ease;
     }
+
 }
 
 @media screen and (max-width: 480px) {
-    .scroll-btn{
+    .scroll-btn {
         display: none;
     }
- 
+
+
     .send-btn {
         font-size: 40px;
     }
+
+
+    .conversation {
+        width: 108%;
+        left: 4%;
+    }
+
     .input-msg {
         padding-right: 50px;
     }
-    
-    .send-container{
-        transform: translateX(-30px); 
+
+    .send-container {
+        transform: translateX(-30px);
+        transition: transform 1s ease;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .scroll-btn {
+        display: none;
+    }
+
+
+    .send-btn {
+        font-size: 40px;
+    }
+
+
+    .conversation {
+        width: 108%;
+        left: 4%;
+        bottom: 23%;
+    }
+
+    .input-msg {
+        padding-right: 50px;
+    }
+
+    .send-container {
+        transform: translateX(-30px);
         transition: transform 1s ease;
     }
 }

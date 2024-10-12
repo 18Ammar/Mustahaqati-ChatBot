@@ -79,7 +79,7 @@ export default function Profile() {
             align="center"
             style={{ fontSize: '18px', maxWidth: '600px', margin: 'auto' }}
           >
-            تم تنفيذ هذا العمل من قبل شركة Soft-Y لمزيد من التفاصيل زورو موقعنا{' '}
+            تم تنفيذ هذا العمل من قبل شركة Soft-Y لمزيد من التفاصيل زوروا موقعنا{' '}
             <Button component="a" href="https://soft-y.org/" variant="subtle" size="md" compact>
               اضغط هنا
             </Button>
