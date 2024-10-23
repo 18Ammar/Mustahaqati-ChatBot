@@ -129,6 +129,7 @@ export default function HistorySide({ onNewChat, onClearChat, onSelectedChat, in
     <MantineProvider>
       <Paper className={`Container ${isOpen ? "" : "hidden"}`} shadow="md" radius="md" p="sm" ref={historyRef}>
         <HeaderButtons
+          isHistory={true}
           isOpen={isOpen}
           handleClose={handleClose}
           handleOpen={handleOpen}
@@ -151,6 +152,7 @@ export default function HistorySide({ onNewChat, onClearChat, onSelectedChat, in
       {!isOpen && (
         <div className="closedMenu">
           <HeaderButtons
+            isHistory={false}
             isOpen={false}
             handleClose={handleClose}
             handleOpen={handleOpen}

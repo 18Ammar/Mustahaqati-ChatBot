@@ -5,7 +5,8 @@ import { FaRegEdit } from "react-icons/fa";
 import "../../../assets/styles/historySection.css";
 import "@mantine/core/styles.css";
 
-export function HeaderButtons({ isOpen, handleClose, handleOpen, handleNewChat }) {
+
+export function HeaderButtons({ isOpen, handleClose, handleOpen, handleNewChat, isHistory }) {
     return (
         <Group justify="space-between" gap="xl" style={{ marginBottom: 20 }}>
             <Button
@@ -19,19 +20,32 @@ export function HeaderButtons({ isOpen, handleClose, handleOpen, handleNewChat }
             >
                 {isOpen ? <GoSidebarExpand /> : <GoSidebarCollapse />}
             </Button>
-            <Button
-                size="xs"
-                compact
-                variant="subtle"
-                onClick={() => {
-                    handleNewChat();
+            {isHistory ?
 
-                }}
-                styles={{ root: { backgroundColor: 'transparent', '&:hover': { backgroundColor: 'transparent' } } }}
-                style={{ color: "#9b9999", fontSize: 30 }}
-            >
-                <FaRegEdit />
-            </Button>
+                (
+                    <Button
+                        size="xs"
+                        compact
+                        variant="subtle"
+                        onClick={() => {
+                            handleNewChat();
+
+                        }}
+                        styles={{ root: { backgroundColor: 'transparent', '&:hover': { backgroundColor: 'transparent' } } }}
+                        style={{ color: "#9b9999", fontSize: 30 }}
+                    >
+                        <FaRegEdit />
+                    </Button>
+
+                ) :
+
+                (
+                    ""
+
+                )
+
+            }
+
         </Group>
     );
 }

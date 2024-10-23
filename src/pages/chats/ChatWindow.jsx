@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "../../assets/styles/Chat.css";
 import { IoSend } from "react-icons/io5";
+
 import { generateAnswers, fetchQuestions } from "../../service/chatApi";
-import { Chip, Group, MantineProvider } from "@mantine/core";
-import { IconQuestionMark } from "@tabler/icons-react";
+import { Box, Chip, Group, MantineProvider } from "@mantine/core";
+import { IconArrowLeft, IconArrowRight, IconQuestionMark } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import "@mantine/core/styles.css"
 export default function ChatWindow({
-  onClearChat,
   activeChatId,
   selectedChatId,
   onFirstMessage,
@@ -19,6 +19,8 @@ export default function ChatWindow({
   const [questions, setQuestions] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [containerHeight, setContainerHeight] = useState(100);
+  const [showIcons, setShowIcons] = useState(true);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth >= 900);
   const lastMessageRef = useRef(null);
   const conversationRef = useRef(null);
   const navigate = useNavigate();
@@ -63,6 +65,7 @@ export default function ChatWindow({
         { sender: "user", content: message.trim(), chatId: selectedChatId },
       ]);
       setMessage("");
+      setShowIcons(false)
       inputElement.style.height = "60px";
       setContainerHeight(100)
       const trimmedMessage = message.trim();
@@ -113,7 +116,17 @@ export default function ChatWindow({
   };
 
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth >= 900);
+    };
 
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const suggestionRef = useRef(null);
   const handleMouseDown = (e) => {
@@ -136,35 +149,57 @@ export default function ChatWindow({
     suggestionRef.current.addEventListener("mouseup", handleMouseUp);
     suggestionRef.current.addEventListener("mouseleave", handleMouseUp);
   };
-
+  const handleScrollRight = () => {
+    if (suggestionRef.current) {
+      suggestionRef.current.scrollBy({
+        left: 300,
+        behavior: "smooth",
+      });
+    }
+  };
+  const handleScrollLeft = () => {
+    if (suggestionRef.current) {
+      suggestionRef.current.scrollBy({
+        left: -300,
+        behavior: "smooth",
+      });
+    }
+  };
   const navToAbout = () => {
     navigate('/about');
   }
 
   return (
-    <MantineProvider
-      withGlobalStyles
-      withNormalizeCSS
-      defaultColorScheme='dark'
-    >
+    <MantineProvider withGlobalStyles withNormalizeCSS defaultColorScheme='dark'>
       <div className="mainView">
-
         <IconQuestionMark className="profile-image" onClick={navToAbout} />
 
-
         <div className="conversation" ref={conversationRef}>
+          {showIcons && (
+
+            <Box
+              component="img"
+              src={`${process.env.PUBLIC_URL}/HiiL.png`}
+              alt="Logo"
+              width={"270px"}
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                opacity: 0.2,
+                transform: "translate(-50%, -50%)",
+              }}
+            />
+
+          )}
+
           <ul>
             {chats
               .filter((chat) => chat.chatId === selectedChatId)
               .map((chat, index) => (
-                <li
-                  key={index}
-                  id={chat.sender}
-                  ref={index === chats.length - 1 ? lastMessageRef : null}
-                >
+                <li key={index} id={chat.sender} ref={index === chats.length - 1 ? lastMessageRef : null}>
                   {chat.content}
                 </li>
-
               ))}
             {isTyping && (
               <li id="bot-typing" className="typing-indicator">
@@ -175,14 +210,31 @@ export default function ChatWindow({
             )}
           </ul>
         </div>
-        <div className="send-wrapper" >
-          <div className="send-container" style={{ height: `${containerHeight}px`, maxHeight: "220px" }}>
+
+        <div className="send-wrapper">
+          <div className="send-container" style={{ height: `${containerHeight}px`, maxHeight: "220px", display: 'flex', alignItems: 'center' }}>
+            {isSmallScreen && (
+              <>
+                <IconArrowLeft
+                  className="arrow-icon"
+                  onClick={handleScrollLeft}
+                  style={{ cursor: 'pointer', zIndex: 10000, borderRadius: "50px", left: "5%", bottom: `${Math.min(containerHeight - 45, 125)}px` }}
+                />
+                <IconArrowRight
+                  className="arrow-icon"
+                  onClick={handleScrollRight}
+                  style={{ cursor: 'pointer', zIndex: 10000, borderRadius: "50px", left: "94%", bottom: `${Math.min(containerHeight - 45, 125)}px` }}
+                />
+              </>
+            )}
+
             <textarea
               className="input-msg"
               placeholder="اكتب رسالتك"
               value={message}
               onInput={handleInput}
               onKeyDown={handleKeyDown}
+              rows="2"
             />
             <IoSend className="send-btn" onClick={userMessage} />
 
@@ -190,14 +242,15 @@ export default function ChatWindow({
               className="suggestion-container"
               ref={suggestionRef}
               onMouseDown={handleMouseDown}
-              style={{ position: "absolute", bottom: `${Math.min(containerHeight - 19, 205)}px` }}
+              style={{
+                position: "absolute", bottom: `${Math.min(containerHeight - 19, 205)}px`
 
+              }}
             >
               {questions.map((q, index) => (
-                <Chip.Group>
-                  <Group  >
+                <Chip.Group key={index}>
+                  <Group>
                     <Chip
-                      key={index}
                       variant="outline"
                       onClick={() => handleQuestionClick(q)}
                       styles={{
@@ -219,5 +272,6 @@ export default function ChatWindow({
         </div>
       </div>
     </MantineProvider>
+
   );
 }
