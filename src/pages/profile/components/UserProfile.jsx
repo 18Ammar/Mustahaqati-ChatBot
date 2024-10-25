@@ -3,6 +3,7 @@ import { Container, Grid, Title, Text, Image, Divider, Group, Button, Paper } fr
 import { motion } from 'framer-motion';
 import "../../../assets/styles/Profile.css";
 import Header from "../../../components/Shared/Header";
+import { IconExclamationMark } from '@tabler/icons-react';
 
 const Profile = () => {
   return (
@@ -81,16 +82,25 @@ const Profile = () => {
             mt="md"
             color="dimmed"
             align="center"
-            style={{ fontSize: '18px', maxWidth: '600px', margin: 'auto' }}
+            style={{ fontSize: '18px', maxWidth: '600px', margin: 'auto', fontWeight: 'bold', paddingBottom: "10px" }}
           >
             تم تنفيذ هذا العمل من قبل شركة Soft-Y لمزيد من التفاصيل زوروا موقعنا{' '}
-            <Button component="a" href="https://soft-y.org/" variant="subtle" size="md" compact>
-              اضغط هنا
+            <Button component="a" href="https://soft-y.org/" variant="subtle" size="md" compact pr={10}>
+              soft-y
+            </Button>
+            <Button
+              component="a"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdtQGG65Xdxce-9ig4JO08r9iY1tdHbFzvMpjkLxD2Y0713ag/viewform?usp=sf_link"
+              variant="subtle"
+              color="red"
+              size="md"
+            >
+              الإبلاغ عن خطأ<IconExclamationMark></IconExclamationMark>
             </Button>
           </Text>
         </Group>
       </Container>
-    </div>
+    </div >
   );
 };
 

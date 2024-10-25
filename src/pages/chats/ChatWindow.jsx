@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "../../assets/styles/Chat.css";
 import { IoSend } from "react-icons/io5";
-
 import { generateAnswers, fetchQuestions } from "../../service/chatApi";
-import { Box, Chip, Group, MantineProvider } from "@mantine/core";
+import { Box, Chip, Group, MantineProvider, Modal, Button } from "@mantine/core";
 import { IconArrowLeft, IconArrowRight, IconQuestionMark } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import "@mantine/core/styles.css"
+import "@mantine/core/styles.css";
+
 export default function ChatWindow({
   activeChatId,
   selectedChatId,
@@ -21,9 +21,12 @@ export default function ChatWindow({
   const [containerHeight, setContainerHeight] = useState(100);
   const [showIcons, setShowIcons] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth >= 900);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [messageCount, setMessageCount] = useState(0);
   const lastMessageRef = useRef(null);
   const conversationRef = useRef(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     setChatId(selectedChatId);
   }, [selectedChatId]);
@@ -65,11 +68,20 @@ export default function ChatWindow({
         { sender: "user", content: message.trim(), chatId: selectedChatId },
       ]);
       setMessage("");
-      setShowIcons(false)
+      setShowIcons(false);
       inputElement.style.height = "60px";
-      setContainerHeight(100)
+      setContainerHeight(100);
       const trimmedMessage = message.trim();
       setIsTyping(true);
+
+      setMessageCount((prevCount) => {
+        const newCount = prevCount + 1;
+        if (newCount === 5) {
+          setFeedbackModalOpen(true);
+        }
+        return newCount;
+      });
+
       try {
         const response = await generateAnswers(trimmedMessage);
         setTimeout(() => {
@@ -115,7 +127,6 @@ export default function ChatWindow({
     setMessage(question);
   };
 
-
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth >= 900);
@@ -149,6 +160,7 @@ export default function ChatWindow({
     suggestionRef.current.addEventListener("mouseup", handleMouseUp);
     suggestionRef.current.addEventListener("mouseleave", handleMouseUp);
   };
+
   const handleScrollRight = () => {
     if (suggestionRef.current) {
       suggestionRef.current.scrollBy({
@@ -165,9 +177,10 @@ export default function ChatWindow({
       });
     }
   };
+
   const navToAbout = () => {
     navigate('/about');
-  }
+  };
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS defaultColorScheme='dark'>
@@ -176,21 +189,19 @@ export default function ChatWindow({
 
         <div className="conversation" ref={conversationRef}>
           {showIcons && (
-
             <Box
               component="img"
-              src={`${process.env.PUBLIC_URL}/HiiL.png`}
+              src={`${process.env.PUBLIC_URL}/file.png`}
               alt="Logo"
-              width={"270px"}
+              width={"330px"}
               style={{
                 position: "fixed",
                 top: "50%",
                 left: "50%",
-                opacity: 0.2,
+                opacity: 0.3,
                 transform: "translate(-50%, -50%)",
               }}
             />
-
           )}
 
           <ul>
@@ -218,13 +229,28 @@ export default function ChatWindow({
                 <IconArrowLeft
                   className="arrow-icon"
                   onClick={handleScrollLeft}
-                  style={{ cursor: 'pointer', zIndex: 10000, borderRadius: "50px", left: "5%", bottom: `${Math.min(containerHeight - 45, 125)}px` }}
+                  style={{
+                    cursor: 'pointer',
+                    zIndex: 10000,
+                    borderRadius: "50px",
+                    position: 'absolute',
+                    left: "5%",
+                    bottom: "106%",
+                    transform: "translateY(45%)",
+                  }}
                 />
                 <IconArrowRight
                   className="arrow-icon"
                   onClick={handleScrollRight}
-                  style={{ cursor: 'pointer', zIndex: 10000, borderRadius: "50px", left: "94%", bottom: `${Math.min(containerHeight - 45, 125)}px` }}
-                />
+                  style={{
+                    cursor: 'pointer',
+                    zIndex: 10000,
+                    borderRadius: "50px",
+                    position: 'absolute',
+                    right: "5%",
+                    bottom: "106%",
+                    transform: "translateY(45%)",
+                  }} />
               </>
             )}
 
@@ -244,7 +270,6 @@ export default function ChatWindow({
               onMouseDown={handleMouseDown}
               style={{
                 position: "absolute", bottom: `${Math.min(containerHeight - 19, 205)}px`
-
               }}
             >
               {questions.map((q, index) => (
@@ -270,8 +295,35 @@ export default function ChatWindow({
             </div>
           </div>
         </div>
+
+        <Modal
+          opened={feedbackModalOpen}
+          onClose={() => setFeedbackModalOpen(false)}
+
+          centered
+        >
+          <Modal.Title>
+
+            <div style={{ textAlign: "center" }}>
+              🎉 شكرًا على استخدامك للبرنامج
+            </div>
+
+          </Modal.Title>
+          <div style={{ textAlign: "center", paddingTop: "10px" }}>
+            <p>نسعد بسماع تجربتك معنا. كيف كانت تجربتك مع البرنامج ؟</p>
+            <Button
+              component="a"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSdtQGG65Xdxce-9ig4JO08r9iY1tdHbFzvMpjkLxD2Y0713ag/viewform?usp=sf_link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              شاركنا ملاحظاتك
+            </Button>
+          </div>
+        </Modal>
+
+
       </div>
     </MantineProvider>
-
   );
 }
