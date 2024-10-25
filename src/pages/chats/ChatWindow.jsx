@@ -247,7 +247,7 @@ export default function ChatWindow({
                     zIndex: 10000,
                     borderRadius: "50px",
                     position: 'absolute',
-                    right: "5%",
+                    left: "94%",
                     bottom: "106%",
                     transform: "translateY(45%)",
                   }} />
