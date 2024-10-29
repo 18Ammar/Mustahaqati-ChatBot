@@ -1,3 +1,5 @@
+
+
 html,
 body {
     margin: 0;
@@ -33,7 +35,7 @@ body {
     border-radius: 7px;
     position: absolute;
     bottom: 64px;
-    left: 52.5%;
+    left: 51.8%;
     width: calc(100% - 40px);
     max-width: 670px;
     transform: translateX(-50%);
@@ -106,6 +108,34 @@ body {
     float: right;
     clear: both;
 }
+.message-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative; 
+}
+
+
+
+.feedback-buttons {
+    display: flex;
+    width: 100%;
+    position: absolute; 
+    top: 100%; 
+    left: 52%; 
+    transform: translateX(-50%); 
+}
+
+.feedback-buttons button {
+    background-color: transparent; 
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 9px;
+}
+
+
 
 @keyframes slideIn {
     from {
@@ -332,7 +362,7 @@ body {
     #bot {
         display: flex;
         align-items: center;
-        margin-bottom: 16px;
+        margin-bottom: 46px;
         padding: 10px;
         border-radius: 18px;
         word-break: break-word;

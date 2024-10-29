@@ -141,8 +141,8 @@ h1 {
 
 .nav-menu .nav-text a {
   color: #FFFFFF;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 20px;
+  /* font-family: 'Courier New', Courier, monospace; */
+  font-size: 16px;
   text-decoration: none;
   font-weight: bold;
   position: relative;

@@ -3,10 +3,13 @@ import "../../assets/styles/Chat.css";
 import { IoSend } from "react-icons/io5";
 import { generateAnswers, fetchQuestions } from "../../service/chatApi";
 import { Box, Chip, Group, MantineProvider, Modal, Button } from "@mantine/core";
-import { IconArrowLeft, IconArrowRight, IconQuestionMark } from "@tabler/icons-react";
+import { IconArrowLeft, IconArrowRight, IconChevronLeft, IconChevronRight, IconQuestionMark, IconThumbDownFilled, IconThumbUpFilled } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import "@mantine/core/styles.css";
+import ReactGA from "react-ga4";
 
+
+ReactGA.initialize("G-7PFR5PGZET");
 export default function ChatWindow({
   activeChatId,
   selectedChatId,
@@ -23,6 +26,7 @@ export default function ChatWindow({
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth >= 900);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const [messageCount, setMessageCount] = useState(0);
+  const [reactions, setReactions] = useState([]);
   const lastMessageRef = useRef(null);
   const conversationRef = useRef(null);
   const navigate = useNavigate();
@@ -42,10 +46,11 @@ export default function ChatWindow({
   const handleReceiveMessage = useCallback(
     (response) => {
       setIsTyping(false);
-      setChats((prevChats) => [
-        ...prevChats,
-        { sender: "bot", content: response, chatId: chatId },
-      ]);
+      setChats((prevChats) => {
+        const newChat = { sender: "bot", content: response, chatId: chatId };
+        setReactions((prev) => [...prev, { like: false, dislike: false }]);
+        return [...prevChats, newChat];
+      });
     },
     [chatId]
   );
@@ -86,7 +91,7 @@ export default function ChatWindow({
         const response = await generateAnswers(trimmedMessage);
         setTimeout(() => {
           handleReceiveMessage(response);
-        }, 1000);
+        }, 100);
       } catch (error) {
         setIsTyping(false);
         console.error("Error generating response:", error);
@@ -182,6 +187,31 @@ export default function ChatWindow({
     navigate('/about');
   };
 
+  const handleLike = (index) => {
+    setReactions((prev) => {
+      const updatedReactions = [...prev];
+      updatedReactions[index] = { ...updatedReactions[index], like: true, dislike: false };
+      sendFeedback(chats[index].content, 'good');
+      return updatedReactions;
+    });
+  };
+
+  const handleDislike = (index) => {
+    setReactions((prev) => {
+      const updatedReactions = [...prev];
+      updatedReactions[index] = { ...updatedReactions[index], dislike: true, like: false };
+      sendFeedback(chats[index].content, 'bad');
+      return updatedReactions;
+    });
+
+  };
+  const sendFeedback = (content, feedbackType) => {
+    ReactGA.event({
+      category: 'Chat Feedback',
+      action: feedbackType,
+      label: content,
+    });
+  };
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS defaultColorScheme='dark'>
       <div className="mainView">
@@ -208,8 +238,25 @@ export default function ChatWindow({
             {chats
               .filter((chat) => chat.chatId === selectedChatId)
               .map((chat, index) => (
-                <li key={index} id={chat.sender} ref={index === chats.length - 1 ? lastMessageRef : null}>
-                  {chat.content}
+                <li key={index} id={chat.sender} ref={index === chats.length - 1 ? lastMessageRef : null} className="message-container">
+                  <div className="message-content">{chat.content}</div>
+
+                  {chat.sender === "bot" && (
+                    <div className="feedback-buttons">
+                      <button
+                        onClick={() => handleLike(index)}
+                        style={{ color: reactions[index]?.like ? '#eee' : '#857878' }}>
+                        <IconThumbUpFilled />
+                      </button>
+                      <button
+                        onClick={() => handleDislike(index)}
+                        style={{ color: reactions[index]?.dislike ? '#eee' : '#827575' }}>
+                        <IconThumbDownFilled />
+                      </button>
+                      <p style={{ color: "gray", fontSize: isSmallScreen ? '14px' : '3.2vw', marginTop: "15px" }}>هل كانت الاجابة مناسبة ؟</p>
+
+                    </div>
+                  )}
                 </li>
               ))}
             {isTyping && (
@@ -226,7 +273,7 @@ export default function ChatWindow({
           <div className="send-container" style={{ height: `${containerHeight}px`, maxHeight: "220px", display: 'flex', alignItems: 'center' }}>
             {isSmallScreen && (
               <>
-                <IconArrowLeft
+                <IconChevronLeft
                   className="arrow-icon"
                   onClick={handleScrollLeft}
                   style={{
@@ -239,7 +286,7 @@ export default function ChatWindow({
                     transform: "translateY(45%)",
                   }}
                 />
-                <IconArrowRight
+                <IconChevronRight
                   className="arrow-icon"
                   onClick={handleScrollRight}
                   style={{
@@ -247,7 +294,7 @@ export default function ChatWindow({
                     zIndex: 10000,
                     borderRadius: "50px",
                     position: 'absolute',
-                    left: "94%",
+                    left: "95.2%",
                     bottom: "106%",
                     transform: "translateY(45%)",
                   }} />
@@ -261,6 +308,7 @@ export default function ChatWindow({
               onInput={handleInput}
               onKeyDown={handleKeyDown}
               rows="2"
+
             />
             <IoSend className="send-btn" onClick={userMessage} />
 
@@ -273,7 +321,7 @@ export default function ChatWindow({
               }}
             >
               {questions.map((q, index) => (
-                <Chip.Group key={index}>
+                <Chip.Group key={index} style={{ overflowY: 'auto', maxHeight: '100%', whiteSpace: 'nowrap' }}>
                   <Group>
                     <Chip
                       variant="outline"

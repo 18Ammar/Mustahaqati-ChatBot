@@ -25,10 +25,10 @@ export default function Header({ about }) {
       <nav className={`nav-menu ${isMenuOpen ? "active" : ""}`} style={{ background: about && isMenuOpen ? "linear-gradient(135deg, #2f193d, #0d0909)" : "" }}>
         <div className="nav-text" style={{ background: "" }}>
           <Link to="/" >
-            Home
+            الصفحة الرئيسية
           </Link>
-          <Link to="/chat">Chat</Link>
-          <Link to="/about">about</Link>
+          <Link to="/chat">الدردشة</Link>
+          <Link to="/about">عن المنصة</Link>
         </div>
       </nav>
     </div>

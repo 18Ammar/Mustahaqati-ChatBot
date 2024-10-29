@@ -1,7 +1,7 @@
 // LoginPage.js
 import React from "react";
 import { Box, Image } from "@mantine/core";
-import backgroundImage from "../../../assets/images/image.png";
+import backgroundImage from "../../../assets/images/image.webp";
 import Header from "../../../components/Shared/Header";
 import { TextContainer } from "./TextContainer";
 // import { useLogin } from "../hooks/useLogin";
