@@ -1,22 +1,14 @@
 import axios from "axios";
 
 const apiWithoutInterceptor = axios.create({
-  baseURL: `${
-    process.env.NODE_ENV === "production"
-      ? "https://api.digitaljustice.app/"
-      : "https://api.digitaljustice.app/"
-  }`,
+  baseURL: "https://api.digitaljustice.app/",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 const apiWithInterceptor = axios.create({
-  baseURL: `${
-    process.env.NODE_ENV === "production"
-      ? "https://api.digitaljustice.app/"
-      : "https://api.digitaljustice.app/"
-  }`,
+  baseURL: "https://api.digitaljustice.app/",
   headers: {
     "Content-Type": "application/json",
   },

@@ -39,9 +39,11 @@ export default function LoginPage() {
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           zIndex: 1,
-          padding: '0 50px',
+          width: '100%',
+          height: '100%',
+          padding: '110px clamp(24px, 6vw, 96px) 40px',
         }}
       >
         <TextContainer

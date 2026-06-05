@@ -12,7 +12,6 @@ export function HeaderButtons({ isOpen, handleClose, handleOpen, handleNewChat, 
             <Button
                 size="xs"
                 styles={{ root: { backgroundColor: 'transparent', '&:hover': { backgroundColor: 'transparent' } } }}
-                compact
                 variant="subtle"
                 onClick={isOpen ? handleClose : handleOpen}
                 className="closeButton"
@@ -25,7 +24,6 @@ export function HeaderButtons({ isOpen, handleClose, handleOpen, handleNewChat, 
                 (
                     <Button
                         size="xs"
-                        compact
                         variant="subtle"
                         onClick={() => {
                             handleNewChat();

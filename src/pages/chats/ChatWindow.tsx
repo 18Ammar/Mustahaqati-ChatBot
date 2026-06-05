@@ -11,6 +11,7 @@ import ReactGA from "react-ga4";
 
 ReactGA.initialize("G-7PFR5PGZET");
 export default function ChatWindow({
+  onClearChat,
   activeChatId,
   selectedChatId,
   onFirstMessage,
@@ -66,7 +67,7 @@ export default function ChatWindow({
   }, [chats]);
 
   const userMessage = async () => {
-    const inputElement = document.querySelector(".input-msg");
+    const inputElement = document.querySelector(".input-msg") as HTMLTextAreaElement | null;
     if (message.trim()) {
       setChats((prevChats) => [
         ...prevChats,
@@ -74,7 +75,9 @@ export default function ChatWindow({
       ]);
       setMessage("");
       setShowIcons(false);
-      inputElement.style.height = "60px";
+      if (inputElement) {
+        inputElement.style.height = "60px";
+      }
       setContainerHeight(100);
       const trimmedMessage = message.trim();
       setIsTyping(true);
@@ -213,7 +216,7 @@ export default function ChatWindow({
     });
   };
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS defaultColorScheme='dark'>
+    <MantineProvider defaultColorScheme='dark'>
       <div className="mainView">
         <IconQuestionMark className="profile-image" onClick={navToAbout} />
 
@@ -221,7 +224,7 @@ export default function ChatWindow({
           {showIcons && (
             <Box
               component="img"
-              src={`${process.env.PUBLIC_URL}/file.png`}
+              src={"/file.png"}
               alt="Logo"
               width={"330px"}
               style={{
@@ -307,7 +310,7 @@ export default function ChatWindow({
               value={message}
               onInput={handleInput}
               onKeyDown={handleKeyDown}
-              rows="2"
+              rows={2}
 
             />
             <IoSend className="send-btn" onClick={userMessage} />
@@ -321,24 +324,26 @@ export default function ChatWindow({
               }}
             >
               {questions.map((q, index) => (
-                <Chip.Group key={index} style={{ overflowY: 'auto', maxHeight: '100%', whiteSpace: 'nowrap' }}>
-                  <Group>
-                    <Chip
-                      variant="outline"
-                      onClick={() => handleQuestionClick(q)}
-                      styles={{
-                        checkIcon: {
-                          display: "none",
-                        },
-                      }}
-                      style={{
-                        margin: "0 1px",
-                      }}
-                    >
-                      {q}
-                    </Chip>
-                  </Group>
-                </Chip.Group>
+                <div key={index} style={{ overflowY: 'auto', maxHeight: '100%', whiteSpace: 'nowrap' }}>
+                  <Chip.Group>
+                    <Group>
+                      <Chip
+                        variant="outline"
+                        onClick={() => handleQuestionClick(q)}
+                        styles={{
+                          checkIcon: {
+                            display: "none",
+                          },
+                        }}
+                        style={{
+                          margin: "0 1px",
+                        }}
+                      >
+                        {q}
+                      </Chip>
+                    </Group>
+                  </Chip.Group>
+                </div>
               ))}
             </div>
           </div>
@@ -375,3 +380,4 @@ export default function ChatWindow({
     </MantineProvider>
   );
 }
+

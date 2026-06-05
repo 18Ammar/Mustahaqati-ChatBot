@@ -139,6 +139,7 @@ export default function HistorySide({ onNewChat, onClearChat, onSelectedChat, in
           <HistoryList
             histories={histories}
             editableChatId={editableChatId}
+            menuRef={historyRef}
             activeMenu={activeMenu}
             updateChatTitle={updateChatTitle}
             getChats={getChats}

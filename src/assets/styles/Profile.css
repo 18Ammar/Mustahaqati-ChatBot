@@ -29,6 +29,126 @@
     background: linear-gradient(135deg, #2f193d, #0d0909);
 }
 
+.about-page-container {
+    max-width: 1220px;
+}
+
+.about-intro {
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+}
+
+.about-section {
+    margin-top: 3rem;
+}
+
+.about-section-stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.about-section-row {
+    display: grid;
+    grid-template-columns: minmax(300px, 0.9fr) minmax(520px, 1.1fr);
+    align-items: center;
+    gap: clamp(3rem, 8vw, 8rem);
+    margin-top: 4rem;
+}
+
+.about-section-softy {
+    margin-top: 4rem;
+}
+
+.about-logo-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+}
+
+.about-logo {
+    width: 100%;
+    height: auto;
+}
+
+.about-logo-mosul {
+    max-width: 260px;
+}
+
+.about-logo-hiil {
+    max-width: 250px;
+}
+
+.about-logo-softy {
+    max-width: 330px;
+}
+
+.about-card {
+    background-color: #291a35;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: #d8d2dc;
+}
+
+.about-card-wide {
+    width: 100%;
+    max-width: 900px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-card-side {
+    width: 100%;
+    max-width: 620px;
+    min-height: 330px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-card-hiil {
+    max-width: 900px;
+    min-height: 250px;
+}
+
+.about-card-softy {
+    max-width: 900px;
+    min-height: 250px;
+}
+
+.about-card-title {
+    color: #d8d2dc;
+    font-family: monospace;
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    margin-bottom: 1.5rem;
+    line-height: 1.45;
+}
+
+.about-card-heading {
+    color: #d8d2dc;
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    font-weight: 700;
+    margin-bottom: 1.4rem;
+    line-height: 1.45;
+}
+
+.about-card-text {
+    color: #d8d2dc;
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.75;
+}
+
+.about-actions {
+    gap: 3rem;
+    margin-top: 1.5rem;
+}
+
 .profile-container {
     position: relative;
     display: flex;
@@ -135,6 +255,21 @@
     .profile-container button {
         font-size: 14px;
         padding: 8px 16px;
+    }
+}
+
+@media (max-width: 900px) {
+    .about-section-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .about-logo-column {
+        min-height: auto;
+    }
+
+    .about-card-side {
+        max-width: 100%;
     }
 }
 

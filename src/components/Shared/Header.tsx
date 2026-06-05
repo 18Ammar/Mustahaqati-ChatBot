@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../../assets/styles/Login.css";
 import { Image } from "@mantine/core";
-export default function Header({ about }) {
+export default function Header({ about }: { about?: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   console.log(about)
   return (
@@ -15,7 +15,7 @@ export default function Header({ about }) {
       <div className="logo">
         <Image
           style={{ width: "190px", height: "75px", position: "relative", right: "30px", bottom: "10px" }}
-          src={`${process.env.PUBLIC_URL}/file.png`}
+          src={"/file.png"}
         />
       </div>
       <div
@@ -34,3 +34,4 @@ export default function Header({ about }) {
     </div>
   );
 };
+

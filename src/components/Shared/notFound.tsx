@@ -24,10 +24,10 @@ function NotFoundPage() {
                 >
                     Oops! Page Not Found
                 </Title>
-                <Text size="lg" color="dimmed" style={{ marginBottom: "30px", fontSize: "1.2rem" }}>
+                <Text size="lg" c="dimmed" style={{ marginBottom: "30px", fontSize: "1.2rem" }}>
                     We can't seem to find the page you're looking for. It may have been moved or never existed.
                 </Text>
-                <Group position="center" style={{ marginTop: "30px" }} >
+                <Group justify="center" style={{ marginTop: "30px" }} >
                     <Button
                         variant="gradient"
                         gradient={{ from: 'violet', to: 'indigo', deg: 119 }}
